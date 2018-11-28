@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+	<head>
+		<title>发送异步请求</title>
+		<meta charset="utf-8">
+	</head>
+	
+	<body>
+	<script src="common.js"></script>
+		<p><input type="button" value="发送异步请求" onclick="getMsg()"></p>
+		<script>
+			function getMsg(){
+			//创建xhr
+			var xhr = createXhr();
+			
+			//监听事件
+			xhr.onreadystatechange=function(){
+				if(xhr.readyState==4&&xhr.status==200){
+					var result = xhr.responseText;
+					console.log(result);
+				}
+			}
+			//打开连接
+			xhr.open("get","/demo/ajaxDemo",true);
+			//发送请求
+			xhr.send(null);
+}
+		</script>
+	</body>
+</html>
