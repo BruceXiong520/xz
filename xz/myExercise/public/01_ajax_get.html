@@ -1,0 +1,37 @@
+<!doctype html>
+<!--  
+-->
+<html>
+	<head>
+		<title>发送异步请求</title>
+		<meta charset="utf-8">
+		<meta name="keyword" content="关键词">
+		<style></style>
+		<script></script>
+	</head>
+	<script src="common.js"></script>
+	<body>
+		<p align="center">
+		<input type="button" value="发送异步请求" onclick="getXhr()">
+		</p>
+		<div id="msg">qwert</div>
+		<script>
+			
+			function getXhr(){
+				var xhr = createXhr();
+				
+				xhr.onreadystatechange=function(){
+				if(xhr.readyState==4&&xhr.status==200){	
+					var msg = document.getElementById("msg");
+					var result = xhr.responseText;
+					msg.innerHTML="<h2>"+msg.innerHTML+result+"</h2>";
+					}
+				}
+				xhr.open('get','demo/ajaxDemo',true);
+				xhr.send(null);	
+			}
+
+
+		</script>
+	</body>
+</html>

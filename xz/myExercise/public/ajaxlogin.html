@@ -1,0 +1,40 @@
+<!doctype html>
+<html>
+	<head>
+		<title>第三个异步请求</title>
+		<meta charset="utf-8">
+	</head>
+
+	<body>
+		<script src="./common.js"></script>
+		<p>用户名称：<input type="text" id="uname"><br></p>
+		<p>用户密码：<input type="password" id="pwd"><br></p>
+		<p><input type="button" value="接受参数" onclick="getMsg()"></p>
+		<div id="msg"></div>
+		<script>
+			function getMsg(){
+				
+				console.log(3333)
+				var xhr = createXhr();
+				
+				console.log(xhr);
+
+				xhr.onreadystatechange=function(){
+					console.log(4444);
+					if(xhr.readyState==4&&xhr.status==200){
+						var result = xhr.responseText;
+						$("msg").innerHTML=result;
+						console.log(2222)
+					}
+				}
+
+				console.log(1111);
+				var uname=$("uname").value;
+				xhr.open("get","/demo/ajaxlogin?uname="+uname,true);
+				xhr.send(null);
+			}
+		</script>
+
+
+	</body>
+</html>
