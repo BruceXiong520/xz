@@ -1,0 +1,15 @@
+{
+  "name": "xz",
+  "version": "1.0.0",
+  "description": "1������app.js pool.js,routers(·���ļ�),public(html�ļ�)\r 1������������app.js,����Ҫ�õ���ģ�鲢ʹ�ã��м��һ��Ҫ�ͷ���������һ��ʹ��,���й��ء���\r ����express,pool��ģ��,�йܾ�̬��Դrouter,public\r 2����n��.jsģ��(��n*m��·��)����router�ļ�����\r 3",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.4",
+    "mysql": "^2.16.0"
+  }
+}
