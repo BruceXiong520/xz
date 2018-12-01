@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+	<head>
+		<title>ajax	</title>
+		<meta charset="utf-8">
+	</head>
+	<body>
+		<script src="./common.js"></script>
+		<p><input type="text" name="uname" id="un"></p>
+		<p><input type="password" name="upwd" id="up"></p>
+		<p><input type="submit" value="登录" onclick="getMsg()"></p>
+		<script>
+			function getMsg(){
+				var xhr = createXhr();
+					var uname=document.getElementById("un").value;
+				var upwd=document.getElementById("up").value;
+				console.log(uname);
+				console.log(upwd);
+				console.log(xhr);
+				xhr.onreadystatechange=function(){
+					console.log(1111);
+					if(xhr.readyState==4&&xhr.status==200){
+						var result = xhr.responseText;
+						console.log(result);
+						var res = JSON.parse(result);
+                        console.log(2222);
+					}
+				}
+				console.log(3333);
+				xhr.open("post","myPro/login",true);
+				var msg="uname="+uname+"&upwd="+upwd;
+				xhr.setRequestHeader("Content-type","appliction/x-www-form-urlencoded");
+				//xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+				xhr.send(msg);
+			}
+		</script>
+	</body>
+</html>

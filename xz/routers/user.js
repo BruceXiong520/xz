@@ -7,12 +7,21 @@ var router = express.Router();
 //用户注册
 router.post('/register',(req,res)=>{
 	//console.log(req.body);
+	var i=400;
 	var obj=req.body;
 	var $uname=obj.uname;
 	var $upwd=obj.upwd;
 	var $email=obj.email;
 	var $phone=obj.phone;
 	//验证是否为空
+	for(var proName in obj){
+		i++;
+		if(!obj[proName]){
+			res.send({code:i,msg:`${proName } is required`});
+			return;
+		}
+	}
+	/*
 	if(!$uname){
 		res.send({code:401,msg:'uname required'});
 		return;
@@ -29,8 +38,8 @@ router.post('/register',(req,res)=>{
 		res.send({code:401,msg:'phone required'});
 		return;
 	}
-	else{
-		pool.query('INSERT INTO xz_user SET ?',[obj],(err,result)=>{
+	*/
+	pool.query('INSERT INTO xz_user SET ?',[obj],(err,result)=>{
 			if(err) throw err;
 			//console.log(result);
 			if(result.affectedRows>0){
@@ -39,7 +48,7 @@ router.post('/register',(req,res)=>{
 			//console.log(result);
 		});
 	//res.send('这是用户注册页');
-	}
+
 	//res.sendFile(__dirname+'/register.html');
 });
 //登录页
@@ -54,7 +63,7 @@ router.post('/login',(req,res)=>{
 		return;
 	}
 	if($upwd==''){
-		res.send({code:401,msg:'upwd is requied'});
+		res.send({code:402,msg:'upwd is requied'});
 		return;
 	}
 	pool.query('SELECT * FROM xz_user WHERE uname=? AND upwd=?',
@@ -79,7 +88,7 @@ router.get('/list',(req,res)=>{
 		$pno=1;
 	}else{
 		$pno=parseInt($pno);
-	}
+	}//此处转整型可以省略
 	if(!$pagesize){
 		$pagesize = 10;
 	}else{
@@ -102,7 +111,7 @@ router.get('/query',(req,res)=>{
 			return;
 		}else{
 			$uid = parseInt($uid);
-		}
+		}//转为整型可以省略
 		pool.query('SELECT * FROM xz_user WHERE uid = ?',
 			[$uid],(err,result)=>{
 				res.send(result[0]);
@@ -132,32 +141,20 @@ router.post('/delete',(req,res)=>{
 //修改用户信息
 router.post('/update',(req,res)=>{
 	//console.log(req.body);
+	var obj = req.body;
+	var i=400;
 	var $uid = req.body.uid;
 	var $user_name = req.body.user_name;
 	var $gender = req.body.gender;
 	var $phone = req.body.phone;
 	var $email = req.body.email;
-	if(!$uid){
-		res.send({code:401,msg:'uid id required'});
-		return;
-	}else{
-		$uid = parseInt($uid);
-	}
-	if(!$user_name){
-		res.send({code:401,msg:'user_name is required'});
-		return;
-	}
-	if(!$gender){
-		res.send({code:401,msg:'gender is required'});
-		return;
-	}
-	if(!$phone){
-		res.send({code:401,msg:'phone is required'});
-		return;
-	}
-	if(!$email){
-		res.send({code:401,msg:'emaile is required'});
-		return;
+	for(var proName in obj){
+		i++;
+		if(!obj[proName]){
+			res.send({code:i,msg:`${proName } is required`});
+			return;
+		}
+	
 	}
 	pool.query('UPDATE xz_user SET user_name=?,gender=?,phone=?,email=? WHERE uid = ?',
 		[$user_name,$gender,$phone,$email,$uid],(err,result)=>{
@@ -165,7 +162,7 @@ router.post('/update',(req,res)=>{
 			if(result.affectedRows>0){
 				res.send({code:200,msg:'update is sucessed'});
 		}else{
-			res.send({code:401,msg:'update is fialed'});
+			res.send({code:301,msg:'update is fialed'});
 		}
 	});
 

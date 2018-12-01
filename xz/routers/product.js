@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 var pool = require('../pool.js');
 var router = express.Router();//注意()
-
+//商品列表
 router.get('/list',(req,res)=>{
 	//console.log(req.query);
 	var $pno = req.query.pno;
@@ -21,7 +21,7 @@ router.get('/list',(req,res)=>{
 			res.send(result);
 	});
 });
-
+//查询
 router.get('/query',(req,res)=>{
 	//console.log(req.query);
 	var $lid = req.query.lid;
@@ -38,6 +38,7 @@ router.get('/query',(req,res)=>{
 		}
 	});
 });
+//删除
 router.get('/delete',(req,res)=>{
 	var $lid = req.query.lid;
 	if(!$lid){
@@ -54,6 +55,7 @@ router.get('/delete',(req,res)=>{
 		}
 	});
 });
+//添加
 router.post('/add',(req,res)=>{	
 	var obj = req.body;
 	//遍历数组，循环验证是否为空
@@ -113,5 +115,30 @@ router.post('/add',(req,res)=>{
 					});
 					*/
 				
+});
+//修改
+router.post('/update',(req,res)=>{
+	//console.log(req.body);
+	var obj = req.body;
+	var $lid = obj.lid;
+
+	var $price = obj.price;//单价
+
+	var i=400;
+	for(var proName in obj){
+		i++;	
+		if(!obj[proName]){
+			res.send({code:i,msg:`${proName } is required`});
+			return;
+		}
+	}
+	pool.query('UPDATE  xz_laptop SET price=? WHERE lid=?',[$price,$lid],(err,result)=>{
+		if(err) throw err;
+		if(result.affectedRows>0){
+			res.send({code:200,msg:'update success'});
+		}else{
+		res.send({code:400,msg:'lid is not existed'});
+		}
+	});
 });
 module.exports = router;
