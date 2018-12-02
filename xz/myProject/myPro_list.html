@@ -1,0 +1,111 @@
+<!doctype html>
+<html>
+	<head>
+		<title>ajax</title>
+		<meta charset = "utf-8">
+	</head>
+	<body>
+		<!--<p><input type="text" name="uid" id="uid"></p>-->
+		<p><input type="text" name="start" id="start"></p>
+		<p><input type="text" name="count" id="count"></p>
+		<p><input type="submit" value="获取用户列表" onclick="getList()"></p>
+		<table border="1px" bordercolor="green">
+			<thead>
+				<tr>
+					<td>编号</td>
+					<td>姓名</td>
+					<td>密码</td>
+					<td>邮箱</td>
+					<td>电话</td>
+					<td>头像</td>
+					<td>真实姓名</td>
+					<td>性别</td>
+				</tr>
+			</thead>
+			<tbody id="msg">
+			</tbody>
+		</table>
+		<script>
+			function getList(){
+
+				//var uid=document.getELementById("uid").value;
+				//var uid=document.getElementById("uid").value;
+				var xhr = (function(){
+					if(window.XMLHttpRequest){
+						xhr=new XMLHttpRequest();
+					}else{
+						xhr=new ActiveXObject("Microsoft.XMLHttp");
+					}
+					return xhr;
+				})();
+
+				
+				xhr.onreadystatechange=function(){
+					//console.log(1111);
+					if(xhr.readyState==4&&xhr.status==200){
+						//console.log(2222);
+						var result = xhr.responseText;
+						//console.log(result);
+						var res=JSON.parse(result);
+						//console.log(res);
+						var str="";
+						for(var i=0;i<res.length;i++){
+							str+="<tr>";
+							  str+="<td>"+res[i].uid+"</td>";
+							  str+="<td>"+res[i].uname+"</td>";
+							  str+="<td>"+res[i].upwd+"</td>";
+							  str+="<td>"+res[i].email+"</td>";
+							  str+="<td>"+res[i].phone+"</td>";
+							  str+="<td>"+res[i].avatar+"</td>";
+							  str+="<td>"+res[i].user_name+"</td>";
+							  var gender=res[i].gender==1?"男":res[i].gender==0?"女":"保密";
+							  str+="<td>"+gender+"</td>";
+							  str+="<td>"+
+							       "<a href='javascript:deleteUse("+res[i].uid+")'>"+"删除"+"<a>"+"&nbsp"+
+								   "<a href='myPro_query_update.html?uid="+res[i].uid+"'>"+"修改"+"<a>";
+								   +"</td>"; 
+							str+="</tr>";
+						}
+							document.getElementById("msg").innerHTML=str;
+					}
+				}
+
+
+				xhr.open("post","/myPro/list",true);
+
+				
+				var start = document.getElementById("start").value;
+				var count = document.getElementById("count").value;
+				var msg = "start="+start+"&count="+count;
+
+				xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+				xhr.send(msg);
+				//console.log(msg);	
+			}
+			function deleteUser(uid){
+				var xhr = (function(){
+					if(window.XMLHttpRequest){
+						xhr=new XMLHttpRequest();
+					}else{
+						xhr=new ActiveXObject("Microsoft.XMLHttp")
+					}
+					return xhr;
+				})();
+				xhr.onreadystatechange=function(){
+					if(xhr.readyState==4&&xhr.status==200){
+						var result = xhr.responseText;
+						alert(result);
+						getList();
+					}
+				}
+				xhr.open("post","/myPro/delete",true);
+				var msg="uid="+uid;
+				xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+				xhr.send(msg);
+
+			}
+
+		</script>
+	</body>
+
+</html>

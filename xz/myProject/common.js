@@ -1,5 +1,5 @@
-function $(id){
-	return document.getElementById(id); 
+function ele(id){
+	return document.getElementById(id);
 }
 
 function createXhr(){
