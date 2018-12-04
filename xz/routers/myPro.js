@@ -52,10 +52,7 @@ router.post('/delete',(req,res)=>{
 	});
 });
 
-//修改用户
-router.post('/update',(req,res)=>{
-	
-});
+
 //查询用户
 router.get('/query',(req,res)=>{
 	var $uid=req.query.uid;
@@ -67,9 +64,9 @@ router.get('/query',(req,res)=>{
 });
 
 //修改用户
-router.get('/update',(req,res)=>{
+router.post('/update',(req,res)=>{
 	//res.send('qeqwe');
-	var obj = req.query;
+	var obj = req.body;
 	//console.log(obj);
 	var $uname = obj.uname;
 	var $upwd = obj.upwd;
@@ -79,6 +76,7 @@ router.get('/update',(req,res)=>{
 	var $user_name = obj.user_name;
 	var $gender = obj.gender;
 	var $uid = obj.uid;
+	console.log($gender);
 	//res.send("qweqeq");
 	//console.log(obj);
 	
@@ -87,7 +85,7 @@ router.get('/update',(req,res)=>{
 		if(err) throw err;
 		//console.log(result);
 		//if(result.affectedRows>0){
-			res.send("修改成功");
+			res.send("<script>alert('修改成功!');location.href='http://localhost:3000/myPro_list.html';</script>");
 		//}else{
 			//res.send("修改失败");
 		//}
@@ -96,5 +94,40 @@ router.get('/update',(req,res)=>{
 
 });
 
+//检查是否有该用户
+router.post('/checkname',(req,res)=>{
+	var $uname = req.body.uname;
+	//console.log($uname);
+	pool.query('SELECT * FROM xz_user WHERE uname=?',
+		[$uname],(err,result)=>{
+		if(err) throw err;
+		if(result.length>0){
+			res.send("1");//用户名已经存在！
+		}else{
+			res.send("0");//用户名可以使用
+		}
+	});
+});
+
+//用户注册
+router.post('/add',(req,res)=>{
+	var $uname=req.body.uname;
+	var $upwd=req.body.upwd;
+	var $email=req.body.email;
+	var $phone=req.body.phone;
+	//console.log(req.body);
+	
+	pool.query('INSERT INTO xz_user(uname,upwd,email,phone) VALUES(?,?,?,?)',
+		[$uname,$upwd,$email,$phone],(err,result)=>{
+		if(err) throw err;
+		if(result.affectedRows>0){
+			res.send("注册成功！");
+		}else{
+			res.send("注册失败，请重新注册");
+		}
+		
+	});
+	
+});
 
 module.exports = router;

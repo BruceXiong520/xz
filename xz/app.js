@@ -7,6 +7,7 @@ var productRouter = require('./routers/product.js');
 var shoppingcartRouter = require('./routers/shoppingcart.js')
 var demoRouter = require('./routers/demo.js');
 var myProRouter = require('./routers/myPro.js');
+var demo1Router = require('./routers/demo1.js');
 
 var server = express();
 server.listen(3000,()=>{
@@ -18,6 +19,7 @@ server.listen(3000,()=>{
 server.use(bodyParser.urlencoded({extended:false}));
 
 server.use(express.static('myExercise'));
+server.use(express.static('myex'));
 server.use(express.static('myProject'));
 server.use(express.static('public'));
 server.use('/user',userRouter);
@@ -25,5 +27,6 @@ server.use('/product',productRouter);
 server.use('/cart',shoppingcartRouter);
 server.use('/demo',demoRouter);
 server.use('/myPro',myProRouter);
+server.use('/demo1',demo1Router);
 
 

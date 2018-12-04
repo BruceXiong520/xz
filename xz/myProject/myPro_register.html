@@ -1,0 +1,97 @@
+<!doctype html>
+<html>
+	<head>
+		<title>ajax</title>
+		<meta charset="utf-8">
+	</head>
+	<body>
+		<div id="reg">
+			<p>用户名称：<input type="text" name="uname" id="uname" onblur="checkMsg()"><span id="msg"></span></p>
+			<p>用户密码：<input type="password" name="upwd" id="upwd"></p>
+			<p>确认密码：<input type="password" name="upwd1" id="upwd1" onblur="checkPwd()"><span id="pwd"></span></p>
+			<p>用户邮箱：<input type="text" name="email" id="email"></p>
+			<p>手机号码：<input type="text" name="phone" id="phone"></p>
+			<p><input type="submit" value="提交注册信息" onclick="addMsg()"></p>
+		</div>
+		<script>
+			function checkMsg(){
+				var xhr = (function(){
+					if(window.XMLHttpRequest){
+						xhr=new XMLHttpRequest();
+					}else{
+						xhr=new ActiveXObject("Microsoft.XMLHttp");
+					}
+					return xhr;
+				})();
+				xhr.onreadystatechange=function(){
+					console.log(1111);
+					if(xhr.readyState==4&&xhr.status==200){
+						var result = xhr.responseText;
+						if(result=="1"){
+							document.getElementById("msg").innerHTML="用户名已经存在！";
+							isRegister=false;
+						}else{
+							document.getElementById("msg").innerHTML="用户名可以使用！";
+							isRegister=true;
+						}
+
+						//var res = JSON.parse(result);
+						//alert(result);
+						//console.log(res);
+						//console.log(2222);
+					}
+				}
+				xhr.open("post","/myPro/checkname",true);
+				var uname=document.getElementById("uname").value;
+				var msg="uname="+uname;
+				xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+				xhr.send(msg);
+			}
+			function addMsg(){
+				if(isRegister==true&&isPwd==true){
+					var xhr = (function(){
+						if(window.XMLHttpRequest){
+							xhr=new XMLHttpRequest();
+						}else{
+							xhr=new ActiveXObject("Microsoft.XMLHttp");
+						}
+						return xhr;
+					})();
+					xhr.onreadystatechange=function(){
+						if(xhr.readyState==4&&xhr.status==200){
+							var result = xhr.responseText;
+							//alert(result);
+							document.getElementById("reg").innerHTML="<h1>"+result+"<h1>";
+						}
+					}
+
+					xhr.open("post","myPro/add",true);
+					var uname=document.getElementById("uname").value;
+					var upwd=document.getElementById("upwd").value;
+					var email = document.getElementById("email").value;
+					var phone = document.getElementById("phone").value;
+					var msgs="uname="+uname+"&upwd="+upwd+"&email="+email+"&phone="+phone;
+					
+					xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+
+					console.log(msgs);
+					
+					xhr.send(msgs);
+				}else{
+					alert("请检查注册信息");
+				}
+			}
+			function checkPwd(){
+				var upwd=document.getElementById("upwd").value;
+				var upwd1=document.getElementById("upwd1").value;
+				if(upwd==upwd1){
+					document.getElementById("pwd").innerHTML="两次密码相同！";
+					isPwd=true;
+				}else{
+					document.getElementById("pwd").innerHTML="两次密码不相同！";
+					isPwd=false;
+				}
+			}
+		</script>
+	</body>
+</html>

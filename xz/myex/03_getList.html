@@ -1,0 +1,32 @@
+<!doctype html>
+<html>
+	<head>
+		<title>ajax</title>
+		<meta charset="utf-8">
+		<script></script>
+	</head>
+	<body>
+		<div>起始页：<input type="text" name="start" id="start"></div>
+		<div>条数：<input type="text" name="count" id="count"></div>
+		<div><input type="button" value="获取列表" onclick="getList()"></div>
+		<script>
+			function getList(){
+				var xhr=new XMLHttpRequest();
+				console.log(1111);
+				xhr.onreadystatechange=function(){
+					if(xhr.readyState==4&&xhr.status==200){
+						console.log(2222);
+						var result=xhr.responseText;
+						console.log(result);
+						alert(result);
+					}
+					console.log(333);
+				}
+				var sta = start.value;
+				var cou = count.value;
+				xhr.open("get","demo1/userList?start="+sta+"&count="+cou,true);
+				xhr.send(null);
+			}
+		</script>
+	</body>
+</html>

@@ -1,0 +1,28 @@
+<!doctype html>
+<html>
+	<head>
+		<title>ajax</title>
+		<meta charset="utf-8">
+		<script></script>
+	</head>
+	<body>
+		<p><input type="text" name="uname" id="un"></p>
+		<div><input type="password" name="upwd" id="up"></div>	
+		<div><input type="button" value="登录" onclick="login()"></div>
+		<script>
+			function  login(){
+				var xhr=new XMLHttpRequest();
+				xhr.onreadystatechange=function(){
+					if(xhr.readyState==4&&xhr.status==200){
+						var result=xhr.responseText;
+						alert(result);
+					}	
+				}
+				var uname=un.value;
+				var upwd=up.value;
+				xhr.open("get","/demo1/login?uname="+uname+"&upwd="+upwd,true);
+				xhr.send(null);
+			}
+		</script>
+	</body>
+</html>
