@@ -1,11 +1,11 @@
 <!doctype html>
 <html>
 	<head>
-		<title>ajax</title>
+		<title>用户列表</title>
 		<meta charset="utf-8">
 		<script></script>
 	</head>
-	<body>
+	<body onload="getList()">
 		<div>起始页：<input type="text" name="start" id="start"></div>
 		<div>条数：<input type="text" name="count" id="count"></div>
 		<div><input type="button" value="获取列表" onclick="getList()"></div>
@@ -20,17 +20,19 @@
 					<td>用户头像</td>
 					<td>真实姓名</td>>
 					<td>用户性别</td>
+					<td>用户操作</td>
 				</tr></thead>
+				
 				<tbody id="msg"></tbody>
 			</table>
 		</div>
 		<script>
 			function getList(){
 				var xhr=new XMLHttpRequest();
-				console.log(1111);
+				//console.log(1111);
 				xhr.onreadystatechange=function(){
 					if(xhr.readyState==4&&xhr.status==200){
-						console.log(2222);
+						//console.log(2222);
 						var result=xhr.responseText;
 						//console.log(result);
 						//alert(result);
@@ -43,8 +45,13 @@
 								for(var proName in res[i]){
 									//console.log(res[i].gender);
 									str+="<td>"+res[i][proName]+"</td>";
+								
 								}
-									console.log(res[i].gender);
+								//javascript:deleteUse("+res[i].uid+")
+									str+="<td>"+"<a href='javascript:deleteUser("+res[i].uid+")'>"+"删除"+"</a>"+"&nbsp"
+									+"<a href='03_query_update.html?uid="+res[i].uid+"'>"+"修改"+"</a>"+"</td>"
+									
+									//console.log(res[i].gender);
 									/*
 									str+="<td>"+res[i].uid+"</td>"
 									str+="<td>"+res[i].uname+"</td>"
@@ -61,13 +68,34 @@
 
 						msg.innerHTML=str;
 					}
-					console.log(333);
+					//console.log(333);
 				}
 				var sta = start.value;
 				var cou = count.value;
-				xhr.open("get","demo1/userList?start="+sta+"&count="+cou,true);
+				xhr.open("get","myProject/userList?start="+sta+"&count="+cou,true);
 				xhr.send(null);
 			}
+
+			function deleteUser(uid){
+				console.log(11111);
+				var xhr = new XMLHttpRequest();
+				console.log(xhr);
+				console.log(2222);
+				xhr.onreadystatechange=function(){
+					console.log(333);
+					if(xhr.readyState==4&&xhr.status==200){
+						console.log(444);
+						var result=xhr.responseText;
+						alert(result);
+						getList();
+					}
+					
+				}
+				xhr.open("get","myProject/delete?uid="+uid,true);
+				xhr.send(null);
+			}
+
+	
 		</script>
 	</body>
 </html>

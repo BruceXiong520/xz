@@ -1,0 +1,27 @@
+<!doctype html>
+<html>
+	<head>
+		<title>css</title>
+		<meta charset="utf-8">
+	</head>
+	<body>
+		<div>用户名：<input type="text"  id="uname"></div>
+		<div>密码：<input type="text"  id="upwd"></div>
+		<div><input type="button" onclick="post_Msg()" value="登录"></div>
+		<script>
+			function post_Msg(){
+				var xhr = new XMLHttpRequest();
+				xhr.onreadystatechange=function(){
+					if(xhr.readyState==4&&xhr.status==200){
+						var result = xhr.responseText;
+						alert(result);
+					}
+				}
+				xhr.open("post","/demo1/postlogin",true);
+				var formdata="uname="+uname.value+"&upwd="+upwd.value;
+				xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+				xhr.send(formdata);
+			}
+		</script>
+	</body>
+</html>

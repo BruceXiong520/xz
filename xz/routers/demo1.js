@@ -97,12 +97,43 @@ router.get("/userList",(req,res)=>{
 	var $start=req.query.start;
 	var $count=parseInt(req.query.count);
 	console.log(req.query);
-	
+	if(!$start){
+		$start=1;
+	}if(!$count){
+		$count=5;
+	}
 	pool.query("SELECT * FROM xz_user limit ?,?",[($start-1)*$count,$count],(err,result)=>{
 			if(err) throw err;
 			res.send(result);
 			
 	});
 	
+});
+
+router.post('/postlogin',(req,res)=>{
+	//console.log(req.body);
+	var obj = req.body;
+	//console.log(obj);
+	var $uname = obj.uname;
+	var $upwd = obj.upwd;
+	if($uname==''){
+		res.send({code:401,msg:'uname is requied'});
+		return;
+	}
+	if($upwd==''){
+		res.send({code:402,msg:'upwd is requied'});
+		return;
+	}
+	pool.query('SELECT * FROM xz_user WHERE uname=? AND upwd=?',
+		[$uname,$upwd],(err,result)=>{
+			if(err) throw err;
+			//if(result[0].uname);
+			if(result.length>0){
+				res.send({code:200,msg:'success'});
+					}else{
+				res.send({code:300,msg:'用户名或者密码错误'});
+						}
+			});
+			
 });
 module.exports=router;

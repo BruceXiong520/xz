@@ -1,0 +1,31 @@
+<!doctype html>
+<html>
+	<head>
+		<title>
+			登录页
+		</title>
+		<meta charset="utf-8">
+
+	</head>
+	<body>
+		<div>用户名称：<input type="text" id="uname"></div>
+		<div>用户密码：<input type="password" id="upwd"></div>
+		<div><input type="button" value="登录" onclick="login()"></div>
+		<script>
+			function login(){
+				var xhr = new XMLHttpRequest();
+				xhr.onreadystatechange=function(){
+					if(xhr.readyState==4&&xhr.status){
+						var result = xhr.responseText;
+						alert(result);
+						location.href="http://localhost:3000/02_getlist.html";
+					}
+				}
+				xhr.open("post","myProject/login",true);
+				var msg="uname="+uname.value+"&upwd="+upwd.value;
+				xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+				xhr.send(msg);
+			}
+		</script>
+	</body>
+</html>

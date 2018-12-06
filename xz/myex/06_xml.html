@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+	<head>
+		<title>ajax</title>
+		<meta charset="utf-8">
+		<script></script>
+	</head>
+	<body>
+		<input type="button" value="异步请求xml数据" onclick="getXML()">
+		<script>
+			function getXML(){
+				var xhr = new XMLHttpRequest();
+				console.log(xhr);
+
+				xhr.onreadystatechange=function(){
+					console.log(111);
+					if(xhr.readyState==4&&xhr.status==200){
+						console.log(222);
+						var result= xhr.responseXML;
+						console.log(result);
+						var students=result.getElementsByTagName("student");
+						console.log((students[0].getElementsByTagName("name"))[0].innerHTML);
+					}	
+				}
+				xhr.open("get","student.xml",true);
+				xhr.send(null);
+			}
+		</script>
+	</body>
+</html>

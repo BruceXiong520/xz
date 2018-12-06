@@ -1,0 +1,106 @@
+<!doctype html>
+<html>
+	<head>
+		<title>注册页	</title>
+		<meta charset="utf-8">
+	</head>
+	<body>
+		<p>用户名称：<input type="text" id="uname" onblur="checkName()"><span id="m"></span></p>
+		<p>用户密码：<input type="password" id="upwd"></p>
+		<p>密码验证：<input type="password" id="upwd1" onblur="checkPwd()"><span id="m1"></span></p>
+		<p>用户邮箱：<input type="text" id="email"></p>
+		<p>用户电话：<input type="text" id="phone"></p>
+		<p>用户头像：<input type="text" id="avatar"></p>
+		<p>真实姓名：<input type="text" id="user_name"></p>
+		<p>用户性别：<input type="radio" id="man" name="gender" value="1"><label for="man">男</label>
+					 <input type="radio" id="woman" name="gender" value="0"><label for="woman">女</label>
+					 <input type="radio" id="baomi" name="gender" value="2"><label for="baomi">保密</label>
+		</p>
+		<p><input type="button" value="注册" onclick="register()"></p>
+		<script>
+			function checkName(){
+				var xhr = new XMLHttpRequest();
+				xhr.onreadystatechange=function(){
+					if(xhr.readyState==4&&xhr.status==200){
+						var result = xhr.responseText;
+						//alert(result);
+						if(result=="1"){
+							m.innerHTML="用户名已经存在";
+							isRegister=false;
+						}if(result=="0"){
+							m.innerHTML="用户名可以使用";
+							isRegister=true;
+						}else{
+							m.innerHTML="用户名不能为空";
+							isRegister=false;
+						}
+						
+					}
+				}
+				xhr.open("post","myProject/checkName",true);
+				var msg="uname="+uname.value;
+				xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+				xhr.send(msg);
+			}
+			function checkPwd(){
+				if(upwd.value==upwd1.value){
+					m1.innerHTML="密码一致！"
+					isPwd=true;
+				}else{
+					m1.innerHTML="密码不一致！"
+					isPwd=false;
+				}
+				
+			}
+			function register(){
+				if(isRegister==true&&isPwd==true){
+					var xhr =new XMLHttpRequest();
+					xhr.onreadystatechange=function(){
+						if(xhr.readyState==4&&xhr.status==200){
+							var result=xhr.responseText;
+							if(result=="1"){
+								alert("注册成功，请登录！");
+								location.href='http://localhost:3000/01_login.html';
+							}else{
+								alert(result);
+								alert("重新填写注册信息");
+								location.href='http://localhost:3000/04_register.html';
+							}
+						
+						}
+					}
+					xhr.open("post","/myProject/register",true);
+					
+					var un=uname.value;
+					var up=upwd.value;
+					var em=email.value;
+					var ph=email.value;
+					var av=email.value;
+					var us=user_name.value;
+					var ge;
+					if(man.checked){
+						ge=man.value;
+					}
+					if(woman.checked){
+						ge=woman.value;
+					}if(baomi.checked){
+						ge=baomi.value;
+					}
+					
+					var 
+					msg="uname="+un+"&upwd="+up+"&email="+em+"&phone="+ph+"&avatar="+av+"&user_name="+us+"&gender="+ge;
+					
+					xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+					
+					console.log(msg);
+
+					xhr.send(msg);
+					}
+					else{
+						alert("请检查注册信息！");
+				}
+			}
+			
+		</script>
+	</body>
+</html>
