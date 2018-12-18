@@ -1,0 +1,14 @@
+img.my_img1{
+    height:16rem;
+}
+img.my_img2{
+    height:13rem;
+}
+h3  .card{
+    background:#e8e8e8;
+}
+@media screen and (max-width: 767px){
+    img.my_img1{
+        width:24rem;
+    }
+}
